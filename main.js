@@ -75,9 +75,9 @@ const GameController = (() => {
         return winConditions
             .filter((combination) => combination.includes(fieldIndex))
             .some((possibleCombination) =>
-             possibleCombination.every(
-                (index) => Gameboard.getField(index) === getCurrentPlayerSign()
-             )
+                possibleCombination.every(
+                    (index) => Gameboard.getField(index) === getCurrentPlayerSign()
+                )
             );
     };
 
@@ -97,4 +97,47 @@ const GameController = (() => {
     };
 })();
 
+const DisplayController = (() => {
+    const fieldElems = document.querySelectorAll(".field");
+    const messageElem = document.getElementById("message");
+    const restartButton = document.getElementById("restartButton");
 
+    fieldElems.forEach((field) => 
+        field.addEventListener("click", (e) => {
+            if (GameController.getIsOver() || e.target.textContent !== "") return;
+            GameController.playRound(parseInt(e.target.dataset.index));
+            updateGameboard();
+        })
+    );
+
+    restartButton.addEventListener("click", (e) => {
+        Gameboard.reset();
+        GameController.reset();
+        updateGameboard();
+        setMessageElem("Player X's turn");
+    });
+
+    const updateGameboard = () => {
+        for (let i = 0; i < fieldElems.length; i++){
+            fieldElems[i].textContent = Gameboard.getField(i);
+        }
+    };
+
+    const setResultMessage = (winner) => {
+        if (winner === "Draw"){
+            setMessageElem("It's a draw!");
+        }
+        else{
+            setMessageElem(`Player ${winner} has won!`);
+        }
+    };
+
+    const setMessageElem = (message) => {
+        messageElem.textContent = message;
+    };
+
+    return{
+        setResultMessage,
+        setMessageElem
+    };
+})();
