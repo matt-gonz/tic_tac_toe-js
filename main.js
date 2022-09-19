@@ -46,14 +46,19 @@ const GameController = (() => {
     const playRound = (fieldIndex) => {
         Gameboard.setField(fieldIndex, getCurrentPlayerSign());
         if (checkWinner(fieldIndex)){
+            DisplayController.setResultMessage(getCurrentPlayerSign());
             isOver = true;
             return;
         }
         if (round === 9){
+            DisplayController.setResultMessage("Draw");
             isOver = true;
             return;
         }
         round++;
+        DisplayController.setMessageElem(
+            `Player ${getCurrentPlayerSign()}'s turn`
+        );
     };
 
     const getCurrentPlayerSign = () => {
