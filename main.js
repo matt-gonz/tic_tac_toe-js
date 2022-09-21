@@ -62,7 +62,7 @@ const GameController = (() => {
     };
 
     const getCurrentPlayerSign = () => {
-        return round % 2 === 1 ? playerX.getSign() : playerO.getSign();
+        return round % 2 === 1 ? playerX.getSymbol() : playerO.getSymbol();
     };
 
     const checkWinner = (fieldIndex) => {
